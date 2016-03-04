@@ -1,0 +1,37 @@
+# Numerous always-ignore extensions
+*.pyc
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*.cache
+*.egg-info
+*~
+*#
+*.sqlite
+
+# OS or Editor folders
+.DS_Store
+Thumbs.db
+.cache
+.coverage
+.project
+.pydevproject
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+._*
+.coverage
+
+# Folders to ignore
+.hg
+dist
+build
+_build
+polls_env
