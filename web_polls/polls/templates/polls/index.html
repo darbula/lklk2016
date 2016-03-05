@@ -1,13 +1,44 @@
 {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Polls</title>
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+function get_results() {
+  $.ajax({url: "{% url 'polls:index' %}", success: function(result){
+    var response = $('<html />').html(result);
+    $("ul#questions").html($("ul#questions", response).html())
+  }});
+}
+setInterval(get_results, 1000);
+})
+</script>
+</head>
+
+<body>
 
 {% if latest_question_list %}
-    <ul>
+    <ul id="questions">
     {% for question in latest_question_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+
+        <ul>
+        {% for choice in question.choice_set.all %}
+            <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        {% endfor %}
+        </ul>
+
     {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+<a href="{% url 'polls:reset' %}">Reset</a>
+
+</body>
+</html>

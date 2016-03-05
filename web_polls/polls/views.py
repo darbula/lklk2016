@@ -3,7 +3,7 @@ from django.http import Http404
 from django.http import HttpResponse, HttpResponseRedirect
 from models import Choice, Question
 from django.template import loader
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.core.urlresolvers import reverse
 
 
@@ -45,3 +45,13 @@ def vote(request, question_id):
         # Vracanje HttpResponseRedirect objekta nakon uspjesnog slanja podataka
         # onemogucava visestruko slanje istih podataka klikom na Back u browseru.
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+
+
+def reset(request):
+    questions = get_list_or_404(Question)
+    for question in questions:
+        for choice in question.choice_set.all():
+            choice.votes = 0
+            choice.save()
+    return HttpResponseRedirect(reverse('polls:index'))
+
